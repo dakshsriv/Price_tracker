@@ -1,0 +1,5 @@
+Branch: main
+Role: Admin
+Username: k8p27hi7yrgsgvv2j7np
+Password: pscale_pw_jxU40gdxwLwsq4zbsyQtpSWdNZETikX2FbymlMAdB2Z
+Database: product

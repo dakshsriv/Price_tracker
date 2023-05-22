@@ -1,18 +1,41 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
-import sqlite3
+from pydantic import BaseModel
+#import sqlite3
 from contextlib import asynccontextmanager
 import time
 
+from dotenv import load_dotenv
+load_dotenv()
+import os
+import MySQLdb
+
+connection = MySQLdb.connect(
+  host= os.getenv("HOST"),
+  user=os.getenv("USERNAME"),
+  passwd= os.getenv("PASSWORD"),
+  db= os.getenv("DATABASE"),
+  autocommit = True,
+  ssl_mode = "VERIFY_IDENTITY",
+  ssl = {
+    "ca": "/etc/ssl/certs/ca-certificates.crt"
+  }
+)
+
+try:
+    cur = connection.cursor()
+except:
+    print("error")
+    os.exit()
+
 origins = [
-    "*"
+    "localhost:3000"
 ]
 
+class Item(BaseModel):
+    link2: str
+    email: str
 
-
-conn = sqlite3.connect("Price.db")
-cur=conn.cursor()
 
 def start():
     print("Started")
@@ -34,12 +57,10 @@ app.add_middleware(
 )
 
 @app.post("/", status_code=204)
-async def _(link2: str, email: str):
-    cur.execute("INSERT INTO Products (link, email, prevPrice) VALUES (?, ?, -1)", (link2, email))
-    conn.commit()
+async def _(model: Item):
+    cur.execute("INSERT INTO Products (link, email, prevPrice) VALUES (%s, %s, -1)", (model.link2, model.email))
 
-@app.delete("/", status_code=204)
-async def _(link2: str, email: str):
-    cur.execute("DELETE FROM Products WHERE link=? AND email=?", (link2, email))
-    conn.commit()
+@app.post("/delete/", status_code=204)
+async def _(model: Item):
+    cur.execute("DELETE FROM Products WHERE link=%s AND email=%s", (model.link2, model.email))
 
