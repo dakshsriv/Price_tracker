@@ -62,7 +62,7 @@ def run():
         cur.execute("SELECT link, email, prevPrice FROM Products")
         lst = cur.fetchall()
         print(lst)
-        if lst == []:
+        if lst == [] or lst == ():
              time.sleep(5)
              continue
 

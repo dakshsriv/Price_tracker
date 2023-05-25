@@ -17,14 +17,13 @@ function GetStats() {
   const [msg, setMsg] = useState('')
   return (
     <div>
-      Link: <input name="lnk" value={link} onChange={(e) => setLink(e.target.value)}/>
-      <br/>
+      <label>Link: <input name="lnk" value={link} onChange={(e) => setLink(e.target.value)}/></label>
       Email: <input name="eml" value={email} onChange={(e) => setEmail(e.target.value)}/>
       <button onClick={
-        () => axios.post("http://127.0.0.1:8000/", {"link2": link, "email": email}).then(setMsg('Subscribed!'))
+        () => axios.post("https://dev.dakshsrivastava.com/", {"link2": link, "email": email}).then(setMsg('Subscribed!'))
       }>Subscribe</button>
       <button onClick={
-        () => axios.put("http://127.0.0.1:8000/delete/", {"link2": link, "email": email}).then(setMsg('Unsubscribed!'))
+        () => axios.post("https://dev.dakshsrivastava.com/delete/", {"link2": link, "email": email}).then(setMsg('Unsubscribed!'))
       }>Unsubscribe</button>
       <p id="Verify">{msg}</p>
       

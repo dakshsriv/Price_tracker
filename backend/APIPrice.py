@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 #import sqlite3
 from contextlib import asynccontextmanager
@@ -28,9 +28,7 @@ except:
     print("error")
     os.exit()
 
-origins = [
-    "localhost:3000"
-]
+
 
 class Item(BaseModel):
     link2: str
@@ -50,7 +48,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
